@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archivo 06</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0e0e0e;
+      color: #f5f5f5;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+.countdown {
+  font-size: 2.5rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  word-wrap: break-word;
+  max-width: 90%;
+}
+
+@media (max-width: 600px) {
+  .countdown {
+    font-size: 1.6rem;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+
+    .subtitle {
+      margin-top: 2rem;
+      font-style: italic;
+      opacity: 0.7;
+      text-align: center;
+      max-width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Este archivo se desbloqueará cuando sea el momento exacto.</h1>
+  <div class="countdown" id="countdown"></div>
+  <div class="subtitle">"Solo quien recuerde lo suficiente, sabrá cómo entrar."</div>
+
+  <script>
+    const targetDate = new Date("August 6, 2025 00:00:00").getTime();
+
+    const countdownEl = document.getElementById("countdown");
+
+    const x = setInterval(function () {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+      if (distance < 0) {
+        clearInterval(x);
+        countdownEl.innerHTML = "El archivo está listo. Ingresá para verlo.";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
