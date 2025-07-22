@@ -1,0 +1,188 @@
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: hidden;
+    }
+
+    .section {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .text {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      white-space: pre-line;
+      text-align: justify;
+    }
+    .divider {
+      text-align: center;
+      font-style: italic;
+      margin: 60px 0;
+      opacity: 0.6;
+    }
+    img {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 12px;
+      margin: 20px 0;
+      z-index: 4;
+    }
+    banner-img {
+      position: relative;
+      width: 100%;
+      max-height: 100px;
+      overflow: hidden;
+      transition: opacity 1s ease;
+      z-index: 1;
+    }
+    banner-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #music-player {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid white;
+      padding: 10px 12px;
+      border-radius: 12px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #playPauseBtn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #playPauseBtn:hover {
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 600px) {
+      #music-player {
+        bottom: 10px;
+        padding: 8px;
+      }
+      #playPauseBtn {
+        font-size: 1rem;
+      }
+    }
+
+    #cartas-container, #cartas-no-enviadas-container {
+      overflow: hidden;
+      position: relative;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .cartas-wrapper, .cartas-no-enviadas-wrapper {
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+      width: 100%;
+    }
+    .cartas-wrapper .section, .cartas-no-enviadas-wrapper .carta {
+      min-width: 100%;
+      box-sizing: border-box;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .cartas-wrapper .text, .cartas-no-enviadas-wrapper .carta p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      text-align: center;
+      line-height: 1.8;
+      padding: 10px;
+      color: white;
+    }
+    .cartas-no-enviadas-wrapper .carta p {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+    }
+
+    .botones-cartas {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .botones-cartas button {
+      background: none;
+      border: 2px solid white;
+      color: white;
+      font-size: 1.4rem;
+      padding: 6px 14px;
+      margin: 0 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .botones-cartas button:hover:enabled {
+      background-color: white;
+      color: black;
+    }
+    .botones-cartas button:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .chat-container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #0d0d0d;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+    .message {
+      max-width: 75%;
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 16px;
+      font-size: 1rem;
+      word-wrap: break-word;
+    }
+    .message.dami {
+      background-color: #0084ff;
+      color: white;
+      margin-left: auto;
+    }
+    .message.dix {
+      background-color: #2f2f2f;
+      color: white;
+      margin-right: auto;
+    }
+    .time {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #999;
+    }

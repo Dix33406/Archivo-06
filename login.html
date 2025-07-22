@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Te estaba esperando</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+    }
+
+    #hidden-zone {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 50px;
+      height: 50px;
+      z-index: 99;
+    }
+
+    #login-screen, #frase-screen, #registro-form {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      background-color: black;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    #heart-animation {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 20px;
+    }
+
+    #login-input {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid white;
+      color: white;
+      font-size: 1.2em;
+      text-align: center;
+      outline: none;
+    }
+
+    #message {
+      opacity: 0;
+      position: absolute;
+      bottom: 30px;
+      font-size: 1em;
+      animation: flicker 3s infinite ease-in-out;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    #container {
+      text-align: center;
+      color: white;
+      padding: 20px;
+    }
+
+    .line {
+      opacity: 0;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      transition: opacity 1s ease;
+    }
+
+    #circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background-color: rgba(255, 255, 255, 0.05);
+      display: none;
+      animation: fillCircle 2s forwards;
+    }
+
+    @keyframes fillCircle {
+      0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    .darken {
+      background-color: #000000dd;
+    }
+
+    audio {
+      display: none;
+    }
+
+    #public-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    #registro-form input {
+      margin: 10px 0;
+      padding: 8px;
+      font-size: 1rem;
+      border: none;
+      border-bottom: 2px solid white;
+      background-color: transparent;
+      color: white;
+      outline: none;
+    }
+
+    #registro-form button {
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    #back-button {
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      font-size: 1.8rem;
+      background: none;
+      color: white;
+      border: none;
+      cursor: pointer;
+      z-index: 101;
+    }
+  </style>
+</head>
+<body>
+  <!-- ZONA OCULTA PARA ELI -->
+  <div id="hidden-zone"></div>
+
+  <!-- BOTÓN DE ACCESO PÚBLICO -->
+  <button id="public-button">Acceso Público</button>
+
+  <!-- LOGIN ELI -->
+  <div id="login-screen">
+    <div id="heart-animation">
+      <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 170s-60-36-60-90c0-30 20-50 50-30 30-20 50 0 50 30 0 54-60 90-60 90z" 
+              fill="white" stroke="black" stroke-width="2">
+          <animateTransform attributeName="transform" attributeType="XML"
+            type="scale" values="1;1.1;1" dur="2s" repeatCount="indefinite"/>
+        </path>
+      </svg>
+    </div>
+    <input id="login-input" type="password" placeholder="..." autocomplete="off" />
+    <div id="message">¿Lista?</div>
+  </div>
+
+  <!-- FRASE -->
+  <div id="frase-screen">
+    <div id="container">
+      <div class="line" id="line1">¡Qué nervios!</div>
+      <div class="line" id="line2">No sé cuántas veces soñé con este momento.</div>
+      <div class="line" id="line3">Si estás acá…</div>
+      <div class="line" id="line4">Gracias, sos mi mayor inspiración</div>
+      <div class="line" id="line5">Tocá solo si querés continuar, Mi Amor</div>
+    </div>
+    <div id="circle"></div>
+  </div>
+
+  <!-- REGISTRO PÚBLICO -->
+  <div id="registro-form">
+    <button id="back-button">←</button>
+    <h2>Nombre de usuario</h2>
+    <input type="text" id="username" placeholder="Anónimo123">
+    <button onclick="registrarUsuario()">Ingresar</button>
+  </div>
+
+  <!-- SONIDO CORAZÓN -->
+  <audio id="sonidoCorazon" src="latido.mp3" preload="auto"></audio>
+
+  <script>
+    let tapCount = 0;
+    const hiddenZone = document.getElementById('hidden-zone');
+    const loginScreen = document.getElementById('login-screen');
+    const loginInput = document.getElementById('login-input');
+    const fraseScreen = document.getElementById('frase-screen');
+    const publicBtn = document.getElementById('public-button');
+    const registroForm = document.getElementById('registro-form');
+    const heart = document.getElementById("heart-animation");
+    const audio = document.getElementById("sonidoCorazon");
+    const backButton = document.getElementById('back-button');
+
+    // Zona secreta de Eli
+    hiddenZone.addEventListener('touchstart', () => {
+      tapCount++;
+      if (tapCount === 5) {
+        loginScreen.style.display = 'flex';
+      }
+      setTimeout(() => tapCount = 0, 2000);
+    });
+
+    // Validación de login
+    loginInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        if (loginInput.value === 'Chinita') {
+          loginScreen.style.display = 'none';
+          fraseScreen.style.display = 'flex';
+          showLines();
+        } else {
+          loginInput.value = '';
+        }
+      }
+    });
+
+    // Mostrar frases para Eli
+    function showLines() {
+      const lines = [
+        document.getElementById('line1'),
+        document.getElementById('line2'),
+        document.getElementById('line3'),
+        document.getElementById('line4'),
+        document.getElementById('line5')
+      ];
+      let delay = 1000;
+      lines.forEach((line, index) => {
+        setTimeout(() => line.style.opacity = 1, delay * (index + 1));
+      });
+    }
+
+    // Tocar círculo
+    document.body.addEventListener('click', () => {
+      if (fraseScreen.style.display === 'flex') {
+        document.body.classList.add('darken');
+        document.getElementById('circle').style.display = 'block';
+        setTimeout(() => {
+          window.location.href = "next.html";
+        }, 2500);
+      }
+    });
+
+    // Corazón
+    heart.addEventListener("click", () => {
+      audio.currentTime = 0;
+      audio.play();
+    });
+
+    // Acceso público
+    publicBtn.addEventListener('click', () => {
+      registroForm.style.display = 'flex';
+      document.body.classList.add('darken');
+    });
+
+    backButton.addEventListener('click', () => {
+      registroForm.style.display = 'none';
+      document.body.classList.remove('darken');
+    });
+
+    // Simular login
+    function registrarUsuario() {
+      const username = document.getElementById('username').value;
+      if (username.trim() !== '') {
+        alert("Bienvenido " + username);
+        // Redirigir a pantalla pública
+        window.location.href = "publico.html";
+      }
+    }
+  </script>
+</body>
+</html>
