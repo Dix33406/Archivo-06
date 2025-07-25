@@ -180,3 +180,11 @@ onSnapshot(q, snapshot => {
   });
   chatBox.scrollTop = chatBox.scrollHeight;
 });
+
+// BOTÓN
+document.getElementById("btn-enviar").addEventListener("click", enviarMensaje);
+
+// ENTER
+document.getElementById("chat-input").addEventListener("keypress", function (e) {
+  if (e.key === "Enter") enviarMensaje();
+});
