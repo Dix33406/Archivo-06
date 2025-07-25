@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SnapBack Foro Demo</title>
+  <link rel="stylesheet" href="css/publico.css" />
+</head>
+<body>
+  <header>SnapBack</header>
+
+  <!-- 📡 Chat SnapBack -->
+<div id="chat-container">
+  <div id="chat-box"></div>
+  <div id="chat-form">
+    <input type="text" id="chat-input" placeholder="Escribí un mensaje..." />
+    <button onclick="enviarMensaje()">Enviar</button>
+  </div>
+</div>
+
+  <section class="categorias">
+    <select id="filtro" onchange="filtrarCategoria(this.value)">
+      <option value="">📌 Ver todo</option>
+      <option value="Arte">🎨 Arte</option>
+      <option value="Mecánica">🔧 Mecánica</option>
+      <option value="Psicología">🧠 Psicología</option>
+      <option value="Tecnología">💻 Tecnología</option>
+      <option value="Cocina">🍳 Cocina</option>
+      <option value="Estudio">📚 Estudio</option>
+    </select>
+  </section>
+
+  <section id="blog">
+    <div id="nueva-publicacion">
+      <input type="text" id="titulo-post" placeholder="Título del post" />
+      <textarea id="contenido-post" rows="4" placeholder="Escribí tu contenido, link o pensamiento..."></textarea>
+
+      <div style="margin: 10px 0;">
+        <label>📎 Categoría:</label>
+        <select id="categoria-post">
+          <option value="">Seleccionar...</option>
+          <option value="Arte">🎨 Arte</option>
+          <option value="Mecánica">🔧 Mecánica</option>
+          <option value="Psicología">🧠 Psicología</option>
+          <option value="Tecnología">💻 Tecnología</option>
+          <option value="Cocina">🍳 Cocina</option>
+          <option value="Estudio">📚 Estudio</option>
+        </select>
+      </div>
+
+      <input type="file" id="imagen-post" accept="image/*" />
+      <button onclick="publicar()">Publicar</button>
+    </div>
+    <div id="blog-posts"></div>
+  </section>
+
+  <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+
+  <script src="js/publico.js"></script>
+</body>
+</html>
