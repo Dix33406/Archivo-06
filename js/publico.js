@@ -1,9 +1,8 @@
-// Verificación de sesión
+// ✅ Verificación de sesión
 if (!localStorage.getItem('usuarioActual')) {
   window.location.href = "login.html";
 }
 
-// Al cerrar o recargar página, limpiar sesión
 window.addEventListener('beforeunload', () => {
   const usuario = localStorage.getItem('usuarioActual');
   if (usuario) {
@@ -14,7 +13,6 @@ window.addEventListener('beforeunload', () => {
   }
 });
 
-// Cierre manual de sesión
 function cerrarSesion() {
   const usuario = localStorage.getItem('usuarioActual');
   if (usuario) {
@@ -27,7 +25,7 @@ function cerrarSesion() {
   location.href = "login.html";
 }
 
-// Publicar post
+// ✅ Publicar post
 function publicar() {
   const titulo = document.getElementById('titulo-post').value.trim();
   const categoria = document.getElementById('categoria-post').value.trim();
@@ -126,15 +124,21 @@ function filtrarCategoria(cat) {
   mostrarPosts(cat);
 }
 
-// Al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
   mostrarPosts();
-  mostrarMensajesPrivados();
 });
 
-// 📦 Conexión Firebase
+// ✅ Firebase Config
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  query,
+  orderBy,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBb88k03OMD6yI4XB4Ic2fT1DFITGhb8Fw",
@@ -149,25 +153,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✉️ Enviar mensaje
+// ✅ CHAT
+const input = document.getElementById("chat-input");
+const chatBox = document.getElementById("chat-box");
+const usuario = localStorage.getItem("usuarioActual") || "Anónimo";
+
+document.getElementById("btn-enviar").addEventListener("click", enviarMensaje);
+input.addEventListener("keypress", e => {
+  if (e.key === "Enter") enviarMensaje();
+});
+
 async function enviarMensaje() {
-  const input = document.getElementById("chat-input");
   const texto = input.value.trim();
-  const usuario = localStorage.getItem("usuarioActual") || "Anónimo";
-
   if (!texto) return;
-
   await addDoc(collection(db, "mensajes"), {
-    usuario: usuario,
-    texto: texto,
+    usuario,
+    texto,
     creado: serverTimestamp()
   });
-
   input.value = "";
 }
-
-// 📥 Mostrar mensajes en tiempo real
-const chatBox = document.getElementById("chat-box");
 
 const q = query(collection(db, "mensajes"), orderBy("creado"));
 onSnapshot(q, snapshot => {
@@ -178,54 +183,20 @@ onSnapshot(q, snapshot => {
     p.innerHTML = `<strong>${msg.usuario}:</strong> ${msg.texto}`;
     chatBox.appendChild(p);
   });
+
   chatBox.scrollTop = chatBox.scrollHeight;
+
+  const chatContainer = document.getElementById("chat-float");
+  if (chatContainer.classList.contains("minimizado")) {
+    chatContainer.style.boxShadow = "0 0 15px 2px #0f0";
+    setTimeout(() => {
+      chatContainer.style.boxShadow = "0 0 10px #000";
+    }, 1500);
+  }
 });
 
-// BOTÓN
-document.getElementById("btn-enviar").addEventListener("click", enviarMensaje);
-
-// ENTER
-document.getElementById("chat-input").addEventListener("keypress", function (e) {
-  if (e.key === "Enter") enviarMensaje();
-});
-
-// Minimizar / expandir
+// Minimizar
 document.getElementById("toggle-chat").addEventListener("click", () => {
   const chat = document.getElementById("chat-float");
   chat.classList.toggle("minimizado");
 });
-
-// Escuchar mensajes nuevos y mostrarlos
-import {
-  onSnapshot,
-  query,
-  orderBy,
-  collection
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const chatMensajes = document.getElementById("chat-mensajes");
-
-onSnapshot(
-  query(collection(db, "mensajes"), orderBy("creado")),
-  (snapshot) => {
-    chatMensajes.innerHTML = "";
-    snapshot.forEach((doc) => {
-      const { usuario, texto } = doc.data();
-      const p = document.createElement("p");
-      p.innerHTML = `<strong>${usuario}:</strong> ${texto}`;
-      chatMensajes.appendChild(p);
-    });
-
-    // Scroll abajo
-    chatMensajes.scrollTop = chatMensajes.scrollHeight;
-
-    // Notificación si está minimizado
-    const chatBox = document.getElementById("chat-float");
-    if (chatBox.classList.contains("minimizado")) {
-      chatBox.style.boxShadow = "0 0 15px 2px #0f0";
-      setTimeout(() => {
-        chatBox.style.boxShadow = "0 0 10px #000";
-      }, 1500);
-    }
-  }
-);
