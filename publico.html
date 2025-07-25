@@ -9,15 +9,6 @@
 <body>
   <header>SnapBack</header>
 
-  <!-- 📡 Chat SnapBack -->
-<div id="chat-container">
-  <div id="chat-box"></div>
-  <div id="chat-form">
-    <input type="text" id="chat-input" placeholder="Escribí un mensaje..." />
-    <button id="btn-enviar">Enviar</button>
-  </div>
-</div>
-
   <section class="categorias">
     <select id="filtro" onchange="filtrarCategoria(this.value)">
       <option value="">📌 Ver todo</option>
@@ -56,17 +47,18 @@
 
   <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
 
+  <!-- 📡 Chat flotante -->
   <div id="chat-float" class="minimizado">
-  <div id="chat-header">
-    <span>💬 Chat SnapBack</span>
-    <button id="toggle-chat">_</button>
+    <div id="chat-header">
+      <span>💬 Chat SnapBack</span>
+      <button id="toggle-chat">_</button>
+    </div>
+    <div id="chat-box"></div>
+    <div id="chat-escribir">
+      <input type="text" id="chat-input" placeholder="Escribí un mensaje..." />
+      <button id="btn-enviar">Enviar</button>
+    </div>
   </div>
-  <div id="chat-mensajes"></div>
-  <div id="chat-escribir">
-    <input type="text" id="chat-input" placeholder="Escribí un mensaje..." />
-    <button id="btn-enviar">Enviar</button>
-  </div>
-</div>
 
   <script type="module" src="js/publico.js"></script>
 </body>
