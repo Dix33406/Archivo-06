@@ -188,3 +188,44 @@ document.getElementById("btn-enviar").addEventListener("click", enviarMensaje);
 document.getElementById("chat-input").addEventListener("keypress", function (e) {
   if (e.key === "Enter") enviarMensaje();
 });
+
+// Minimizar / expandir
+document.getElementById("toggle-chat").addEventListener("click", () => {
+  const chat = document.getElementById("chat-float");
+  chat.classList.toggle("minimizado");
+});
+
+// Escuchar mensajes nuevos y mostrarlos
+import {
+  onSnapshot,
+  query,
+  orderBy,
+  collection
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const chatMensajes = document.getElementById("chat-mensajes");
+
+onSnapshot(
+  query(collection(db, "mensajes"), orderBy("creado")),
+  (snapshot) => {
+    chatMensajes.innerHTML = "";
+    snapshot.forEach((doc) => {
+      const { usuario, texto } = doc.data();
+      const p = document.createElement("p");
+      p.innerHTML = `<strong>${usuario}:</strong> ${texto}`;
+      chatMensajes.appendChild(p);
+    });
+
+    // Scroll abajo
+    chatMensajes.scrollTop = chatMensajes.scrollHeight;
+
+    // Notificación si está minimizado
+    const chatBox = document.getElementById("chat-float");
+    if (chatBox.classList.contains("minimizado")) {
+      chatBox.style.boxShadow = "0 0 15px 2px #0f0";
+      setTimeout(() => {
+        chatBox.style.boxShadow = "0 0 10px #000";
+      }, 1500);
+    }
+  }
+);
