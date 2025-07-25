@@ -198,94 +198,166 @@
   </div>
 
   <!-- SONIDO CORAZÓN -->
-  <audio id="sonidoCorazon" src="latido.mp3" preload="auto"></audio>
+  <audio id="sonidoCorazon" src="audio/latido.mp3" preload="auto"></audio>
+<script>
+let tapCount = 0;
+const hiddenZone = document.getElementById('hidden-zone');
+const loginScreen = document.getElementById('login-screen');
+const loginInput = document.getElementById('login-input');
+const fraseScreen = document.getElementById('frase-screen');
+const publicBtn = document.getElementById('public-button');
+const registroForm = document.getElementById('registro-form');
+const heart = document.getElementById("heart-animation");
+const audio = document.getElementById("sonidoCorazon");
+const backButton = document.getElementById('back-button');
 
-  <script>
-    let tapCount = 0;
-    const hiddenZone = document.getElementById('hidden-zone');
-    const loginScreen = document.getElementById('login-screen');
-    const loginInput = document.getElementById('login-input');
-    const fraseScreen = document.getElementById('frase-screen');
-    const publicBtn = document.getElementById('public-button');
-    const registroForm = document.getElementById('registro-form');
-    const heart = document.getElementById("heart-animation");
-    const audio = document.getElementById("sonidoCorazon");
-    const backButton = document.getElementById('back-button');
+// Zona secreta de Eli
+hiddenZone.addEventListener('touchstart', () => {
+  tapCount++;
+  if (tapCount === 5) {
+    loginScreen.style.display = 'flex';
+  }
+  setTimeout(() => tapCount = 0, 2000);
+});
 
-    // Zona secreta de Eli
-    hiddenZone.addEventListener('touchstart', () => {
-      tapCount++;
-      if (tapCount === 5) {
-        loginScreen.style.display = 'flex';
-      }
-      setTimeout(() => tapCount = 0, 2000);
-    });
+// Mostrar frases para Eli
+function showLines() {
+  const lines = [
+    document.getElementById('line1'),
+    document.getElementById('line2'),
+    document.getElementById('line3'),
+    document.getElementById('line4'),
+    document.getElementById('line5')
+  ];
+  let delay = 1000;
+  lines.forEach((line, index) => {
+    setTimeout(() => line.style.opacity = 1, delay * (index + 1));
+  });
+}
 
-    // Validación de login
-    loginInput.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') {
-        if (loginInput.value === 'Chinita') {
-          loginScreen.style.display = 'none';
-          fraseScreen.style.display = 'flex';
-          showLines();
-        } else {
-          loginInput.value = '';
-        }
-      }
-    });
+// Verificar contraseña con hash
+const hashCorrecto = "800e73abf7a2fca41c42a5c59800062ba5f39201e846b453097f4893bb43ea03";
 
-    // Mostrar frases para Eli
-    function showLines() {
-      const lines = [
-        document.getElementById('line1'),
-        document.getElementById('line2'),
-        document.getElementById('line3'),
-        document.getElementById('line4'),
-        document.getElementById('line5')
-      ];
-      let delay = 1000;
-      lines.forEach((line, index) => {
-        setTimeout(() => line.style.opacity = 1, delay * (index + 1));
-      });
+async function verificarPassword(valorIngresado) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(valorIngresado);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashHex = Array.from(new Uint8Array(hashBuffer))
+    .map(b => b.toString(16).padStart(2, '0')).join('');
+
+  if (hashHex === hashCorrecto) {
+    loginScreen.style.display = 'none';
+    fraseScreen.style.display = 'flex';
+    showLines();
+  } else {
+    loginInput.value = '';
+  }
+}
+
+loginInput.addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') {
+    verificarPassword(loginInput.value);
+  }
+});
+
+// Corazón
+heart.addEventListener("click", () => {
+  audio.currentTime = 0;
+  audio.play();
+});
+
+// Tocar círculo
+document.body.addEventListener('click', () => {
+  if (fraseScreen.style.display === 'flex') {
+    document.body.classList.add('darken');
+    document.getElementById('circle').style.display = 'block';
+    setTimeout(() => {
+      window.location.href = "next.html";
+    }, 2500);
+  }
+});
+
+// Acceso público
+publicBtn.addEventListener('click', () => {
+  registroForm.style.display = 'flex';
+  document.body.classList.add('darken');
+});
+
+backButton.addEventListener('click', () => {
+  registroForm.style.display = 'none';
+  document.body.classList.remove('darken');
+});
+
+// Simular login público
+function registrarUsuario() {
+  const username = document.getElementById('username').value.trim();
+  if (!username) {
+    alert("El nombre no puede estar vacío.");
+    return;
+  }
+
+  // Verificar si expiró la sesión y limpiar
+  limpiarUsuariosInactivos();
+
+  let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+
+  if (usuarios.includes(username)) {
+    alert("Ese nombre ya está en uso. Elegí otro.");
+    return;
+  }
+
+  usuarios.push(username);
+  localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
+  localStorage.setItem('usuarioActual', username);
+  localStorage.setItem('ultimaConexion', Date.now());
+
+  alert("Bienvenido " + username);
+  window.location.href = "publico.html";
+}
+
+// Expirar sesión si pasó tiempo sin actividad
+function limpiarUsuariosInactivos() {
+  const tiempoLimite = 5 * 60 * 1000; // 5 minutos
+  const ultima = parseInt(localStorage.getItem('ultimaConexion'));
+  const ahora = Date.now();
+
+  if (ultima && (ahora - ultima > tiempoLimite)) {
+    const usuario = localStorage.getItem('usuarioActual');
+    if (usuario) {
+      let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+      usuarios = usuarios.filter(u => u !== usuario);
+      localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
+      localStorage.removeItem('usuarioActual');
+      localStorage.removeItem('ultimaConexion');
     }
+  }
+}
 
-    // Tocar círculo
-    document.body.addEventListener('click', () => {
-      if (fraseScreen.style.display === 'flex') {
-        document.body.classList.add('darken');
-        document.getElementById('circle').style.display = 'block';
-        setTimeout(() => {
-          window.location.href = "next.html";
-        }, 2500);
-      }
-    });
+// Al entrar a la página: comprobar si sigue activo
+window.addEventListener('DOMContentLoaded', () => {
+  limpiarUsuariosInactivos();
+  const usuario = localStorage.getItem('usuarioActual');
+  if (usuario) {
+    window.location.href = "publico.html";
+  }
+});
 
-    // Corazón
-    heart.addEventListener("click", () => {
-      audio.currentTime = 0;
-      audio.play();
-    });
+// Cada vez que haya interacción, renovar tiempo de sesión
+document.addEventListener('click', () => {
+  if (localStorage.getItem('usuarioActual')) {
+    localStorage.setItem('ultimaConexion', Date.now());
+  }
+});
+window.addEventListener('DOMContentLoaded', () => {
+  const usuario = localStorage.getItem('usuarioActual');
 
-    // Acceso público
-    publicBtn.addEventListener('click', () => {
-      registroForm.style.display = 'flex';
-      document.body.classList.add('darken');
-    });
+  if (usuario) {
+    // Redirige y reemplaza el historial para evitar el "Volver"
+    location.replace("publico.html");
+  }
+});
 
-    backButton.addEventListener('click', () => {
-      registroForm.style.display = 'none';
-      document.body.classList.remove('darken');
-    });
 
-    // Simular login
-    function registrarUsuario() {
-      const username = document.getElementById('username').value;
-      if (username.trim() !== '') {
-        alert("Bienvenido " + username);
-        // Redirigir a pantalla pública
-        window.location.href = "publico.html";
-      }
-    }
-  </script>
+</script>
 </body>
 </html>
