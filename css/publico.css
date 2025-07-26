@@ -1,8 +1,10 @@
+/* RESET Y FUENTE */
 body {
   margin: 0;
   background-color: #000;
   color: white;
   font-family: 'Courier New', Courier, monospace;
+  padding-bottom: 100px;
 }
 
 header {
@@ -13,24 +15,28 @@ header {
   border-bottom: 2px solid #333;
 }
 
+/* FILTRO DE CATEGORÍAS */
 .categorias {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  background: #111;
   padding: 10px;
+  flex-wrap: wrap;
+  background: #111;
 }
 
 #filtro {
   padding: 8px 12px;
+  font-size: 1rem;
   background: #1c1c1c;
   border: 1px solid #444;
   color: #ddd;
   border-radius: 6px;
 }
 
+/* PUBLICACIONES */
 #blog {
-  margin: 30px 20px;
+  margin: 20px auto;
+  max-width: 700px;
   padding: 20px;
   background-color: #111;
   border-radius: 8px;
@@ -41,11 +47,11 @@ header {
 #nueva-publicacion textarea,
 #nueva-publicacion select {
   width: 100%;
-  margin: 10px 0;
+  margin-bottom: 10px;
   padding: 10px;
   background: #1c1c1c;
-  color: white;
   border: 1px solid #555;
+  color: white;
   border-radius: 4px;
 }
 
@@ -56,8 +62,41 @@ header {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
 }
 
+.fila {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+#propuesta-categoria {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#propuesta-categoria input {
+  padding: 8px;
+  margin-bottom: 6px;
+  border: 1px solid #555;
+  background: #1c1c1c;
+  color: white;
+  border-radius: 4px;
+}
+
+#propuesta-categoria button {
+  padding: 8px;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* POSTS */
 .post {
   background-color: #1a1a1a;
   padding: 15px;
@@ -65,6 +104,10 @@ header {
   border-left: 4px solid #888;
   border-radius: 6px;
   position: relative;
+}
+
+.post h3 {
+  margin: 0 0 10px 0;
 }
 
 .post img {
@@ -89,35 +132,16 @@ header {
   font-size: 1rem;
 }
 
-#logout-btn {
-  position: fixed;
-  top: 15px;
-  right: 20px;
-  background-color: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 6px 14px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  border-radius: 6px;
-  z-index: 999;
-}
-
-#logout-btn:hover {
-  background-color: white;
-  color: black;
-}
-
+/* CHAT FLOTANTE */
 #chat-float {
   position: fixed;
-  bottom: 60px; /* 🟢 SUBIDO un poco más */
+  bottom: 70px; /* subido para no quedar fuera en móvil */
   right: 20px;
   width: 320px;
   background: #111;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px #000;
-  font-family: sans-serif;
   color: #fff;
   transition: transform 0.3s ease;
   z-index: 9999;
@@ -138,8 +162,12 @@ header {
   cursor: default;
 }
 
-#toggle-chat {
+#chat-header button {
   cursor: pointer;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
 }
 
 #chat-mensajes {
@@ -172,20 +200,46 @@ header {
   cursor: pointer;
 }
 
-/* 📱 Responsive */
-@media screen and (max-width: 768px) {
+/* BOTÓN DE CERRAR SESIÓN */
+#logout-btn {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 999;
+}
+
+#logout-btn:hover {
+  background-color: white;
+  color: black;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
   #chat-float {
-    width: 90%;
-    right: 5%;
+    width: 95%;
+    right: 2.5%;
+    bottom: 60px;
   }
 
   #blog {
-    margin: 10px;
+    margin: 15px;
     padding: 15px;
   }
 
-  #nueva-publicacion input,
-  #nueva-publicacion textarea {
+  #nueva-publicacion button {
     font-size: 1rem;
+  }
+
+  .categorias {
+    flex-direction: column;
+    align-items: center;
   }
 }
