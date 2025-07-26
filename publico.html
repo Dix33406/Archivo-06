@@ -3,51 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SnapBack Foro Demo</title>
+  <title>SnapBack Foro</title>
   <link rel="stylesheet" href="css/publico.css" />
 </head>
 <body>
+
   <header>SnapBack</header>
 
-  <section class="categorias">
-    <select id="filtro" onchange="filtrarCategoria(this.value)">
-      <option value="">📌 Ver todo</option>
-      <option value="Arte">🎨 Arte</option>
-      <option value="Mecánica">🔧 Mecánica</option>
-      <option value="Psicología">🧠 Psicología</option>
-      <option value="Tecnología">💻 Tecnología</option>
-      <option value="Cocina">🍳 Cocina</option>
-      <option value="Estudio">📚 Estudio</option>
-    </select>
-  </section>
-
-  <section id="blog">
-    <div id="nueva-publicacion">
-      <input type="text" id="titulo-post" placeholder="Título del post" />
-      <textarea id="contenido-post" rows="4" placeholder="Escribí tu contenido..."></textarea>
-
-      <div>
-        <label>📎 Categoría:</label>
-        <select id="categoria-post">
-          <option value="">Seleccionar...</option>
-          <option value="Arte">🎨 Arte</option>
-          <option value="Mecánica">🔧 Mecánica</option>
-          <option value="Psicología">🧠 Psicología</option>
-          <option value="Tecnología">💻 Tecnología</option>
-          <option value="Cocina">🍳 Cocina</option>
-          <option value="Estudio">📚 Estudio</option>
-        </select>
-      </div>
-
-      <input type="file" id="imagen-post" accept="image/*" />
-      <button onclick="publicar()">Publicar</button>
-    </div>
-    <div id="blog-posts"></div>
-  </section>
-
-  <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
-
-  <!-- 📡 Chat SnapBack -->
+  <!-- ✅ Chat flotante -->
   <div id="chat-float" class="minimizado">
     <div id="chat-header">
       <span>💬 Chat SnapBack</span>
@@ -60,20 +23,60 @@
     </div>
   </div>
 
+  <!-- ✅ Filtro de categorías -->
+  <section class="categorias">
+    <select id="filtro" onchange="filtrarCategoria(this.value)">
+      <option value="">📌 Ver todo</option>
+      <option value="Arte">🎨 Arte</option>
+      <option value="Mecánica">🔧 Mecánica</option>
+      <option value="Psicología">🧠 Psicología</option>
+      <option value="Tecnología">💻 Tecnología</option>
+      <option value="Cocina">🍳 Cocina</option>
+      <option value="Estudio">📚 Estudio</option>
+    </select>
+  </section>
+
+  <!-- ✅ Publicación de post -->
+  <section id="blog">
+    <div id="nueva-publicacion">
+      <input type="text" id="titulo-post" placeholder="Título del post" />
+      <textarea id="contenido-post" rows="4" placeholder="Escribí tu contenido, link o pensamiento..."></textarea>
+
+      <div class="fila">
+        <label>📎 Categoría:</label>
+        <select id="categoria-post">
+          <option value="">Seleccionar...</option>
+          <option value="Arte">🎨 Arte</option>
+          <option value="Mecánica">🔧 Mecánica</option>
+          <option value="Psicología">🧠 Psicología</option>
+          <option value="Tecnología">💻 Tecnología</option>
+          <option value="Cocina">🍳 Cocina</option>
+          <option value="Estudio">📚 Estudio</option>
+        </select>
+      </div>
+
+      <div class="fila">
+        <label>📷 Imagen:</label>
+        <input type="file" id="imagen-post" accept="image/*" />
+      </div>
+
+      <button onclick="publicar()">Publicar</button>
+    </div>
+
+    <!-- ✅ Propuesta de nueva categoría -->
+    <div id="propuesta-categoria">
+      <input type="text" id="nueva-categoria" placeholder="Proponer nueva categoría..." />
+      <button onclick="proponerCategoria()">Enviar</button>
+    </div>
+
+    <div id="blog-posts"></div>
+  </section>
+
+  <!-- ✅ Cierre de sesión -->
+  <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+
+  <!-- ✅ Script principal -->
   <script type="module" src="js/publico.js"></script>
-  <script>
-    // ✅ Cierre manual de sesión
-function cerrarSesion() {
-  const usuario = localStorage.getItem('usuarioActual');
-  if (usuario) {
-    let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
-    usuarios = usuarios.filter(u => u !== usuario);
-    localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
-  }
-  localStorage.removeItem('usuarioActual');
-  localStorage.removeItem('ultimaConexion');
-  window.location.href = "login.html";
-}
-  </script>
+
 </body>
 </html>
