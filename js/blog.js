@@ -1,5 +1,5 @@
 // js/blog.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
   getFirestore,
   collection,
@@ -22,7 +22,14 @@ const firebaseConfigBlog = {
   appId: "1:398326666724:web:212270bf526481ad94e3f1"
 };
 
-const blogApp = initializeApp(firebaseConfigBlog, "blogApp");
+// ✅ Evitar inicialización duplicada
+let blogApp;
+if (!getApps().some(app => app.name === "blogApp")) {
+  blogApp = initializeApp(firebaseConfigBlog, "blogApp");
+} else {
+  blogApp = getApp("blogApp");
+}
+
 const db = getFirestore(blogApp);
 
 // 🔁 Mostrar publicaciones
@@ -46,80 +53,4 @@ window.publicar = async () => {
     const reader = new FileReader();
     reader.onload = async function (e) {
       imagenBase64 = e.target.result;
-      await guardarPost(titulo, contenido, imagenBase64, autor, categoria);
-    };
-    reader.readAsDataURL(imagenInput.files[0]);
-  } else {
-    await guardarPost(titulo, contenido, null, autor, categoria);
-  }
-};
-
-async function guardarPost(titulo, contenido, imagen, autor, categoria) {
-  await addDoc(collection(db, "posts"), {
-    titulo,
-    contenido,
-    imagen,
-    autor,
-    categoria,
-    fecha: new Date().toLocaleString()
-  });
-
-  document.getElementById('titulo-post').value = "";
-  document.getElementById('contenido-post').value = "";
-  document.getElementById('imagen-post').value = "";
-
-  mostrarPosts();
-}
-
-async function mostrarPosts(filtro = "") {
-  const contenedor = document.getElementById('blog-posts');
-  contenedor.innerHTML = "";
-
-  const q = query(collection(db, "posts"), orderBy("fecha", "desc"));
-  const snapshot = await getDocs(q);
-
-  snapshot.forEach((docSnap, index) => {
-    const post = docSnap.data();
-    if (filtro && post.categoria !== filtro) return;
-
-    const div = document.createElement('div');
-    div.className = 'post';
-
-    const contenidoConLinks = post.contenido.replace(
-      /(https?:\/\/[^\s]+)/g,
-      '<a href="$1" target="_blank">$1</a>'
-    );
-
-    div.innerHTML = `
-      <div class="acciones">
-        <button onclick="editarPost('${docSnap.id}')">✏️</button>
-        <button onclick="eliminarPost('${docSnap.id}')">🗑️</button>
-      </div>
-      <h3>${post.titulo || "(Sin título)"}</h3>
-      <p>${contenidoConLinks}</p>
-      ${post.imagen ? `<img src="${post.imagen}" alt="Imagen">` : ''}
-      <p style="font-size: 0.85rem; color: #aaa;">📎 ${post.categoria || 'Sin categoría'}</p>
-      <p><strong>${post.autor}</strong> - <em>${post.fecha}</em></p>
-    `;
-
-    contenedor.appendChild(div);
-  });
-}
-
-window.eliminarPost = async (id) => {
-  await deleteDoc(doc(db, "posts", id));
-  mostrarPosts();
-};
-
-window.editarPost = async (id) => {
-  const nuevoTitulo = prompt("Nuevo título:");
-  const nuevoContenido = prompt("Nuevo contenido:");
-
-  if (nuevoTitulo !== null || nuevoContenido !== null) {
-    await updateDoc(doc(db, "posts", id), {
-      titulo: nuevoTitulo || "",
-      contenido: nuevoContenido || ""
-    });
-    mostrarPosts();
-  }
-};
+      await guardarPost(ti
