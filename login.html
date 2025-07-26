@@ -336,11 +336,15 @@ function limpiarUsuariosInactivos() {
 // Al entrar a la página: comprobar si sigue activo
 window.addEventListener('DOMContentLoaded', () => {
   limpiarUsuariosInactivos();
+
   const usuario = localStorage.getItem('usuarioActual');
+
   if (usuario) {
-    window.location.href = "publico.html";
+    // Redirige al blog si ya hay sesión
+    location.replace("publico.html");
   }
 });
+
 
 // Cada vez que haya interacción, renovar tiempo de sesión
 document.addEventListener('click', () => {
@@ -348,15 +352,6 @@ document.addEventListener('click', () => {
     localStorage.setItem('ultimaConexion', Date.now());
   }
 });
-window.addEventListener('DOMContentLoaded', () => {
-  const usuario = localStorage.getItem('usuarioActual');
-
-  if (usuario) {
-    // Redirige y reemplaza el historial para evitar el "Volver"
-    location.replace("publico.html");
-  }
-});
-
 
 </script>
 </body>
