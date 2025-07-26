@@ -3,18 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SnapBack Foro</title>
+  <title>SnapBack Blog</title>
   <link rel="stylesheet" href="css/publico.css" />
 </head>
 <body>
+  <header>
+    <h1>🌀 SnapBack</h1>
+    <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+  </header>
 
-  <header>SnapBack</header>
+  <!-- 📌 Filtro de Categorías -->
+  <section class="categorias">
+    <select id="filtro" onchange="filtrarCategoria(this.value)">
+      <option value="">Ver todo</option>
+      <option value="Arte">🎨 Arte</option>
+      <option value="Tecnología">💻 Tecnología</option>
+      <option value="Cocina">🍳 Cocina</option>
+    </select>
+  </section>
 
-  <!-- ✅ Chat flotante -->
+  <!-- 📝 Formulario de publicación -->
+  <section id="formulario-post">
+    <input type="text" id="titulo-post" placeholder="Título" />
+    <textarea id="contenido-post" placeholder="Contenido..."></textarea>
+    
+    <div class="extra-inputs">
+      <select id="categoria-post">
+        <option value="">Elegí una categoría</option>
+        <option value="Arte">🎨 Arte</option>
+        <option value="Tecnología">💻 Tecnología</option>
+        <option value="Cocina">🍳 Cocina</option>
+      </select>
+
+      <input type="file" id="imagen-post" accept="image/*" />
+    </div>
+    
+    <button id="btn-publicar" onclick="publicar()">Publicar</button>
+  </section>
+
+  <!-- 📄 Sección de posts -->
+  <section id="blog-posts"></section>
+
+  <!-- 💬 Chat flotante -->
   <div id="chat-float" class="minimizado">
     <div id="chat-header">
       <span>💬 Chat SnapBack</span>
-      <button id="toggle-chat">🔼</button>
+      <button id="toggle-chat">🔽</button>
     </div>
     <div id="chat-mensajes"></div>
     <div id="chat-escribir">
@@ -23,60 +57,10 @@
     </div>
   </div>
 
-  <!-- ✅ Filtro de categorías -->
-  <section class="categorias">
-    <select id="filtro" onchange="filtrarCategoria(this.value)">
-      <option value="">📌 Ver todo</option>
-      <option value="Arte">🎨 Arte</option>
-      <option value="Mecánica">🔧 Mecánica</option>
-      <option value="Psicología">🧠 Psicología</option>
-      <option value="Tecnología">💻 Tecnología</option>
-      <option value="Cocina">🍳 Cocina</option>
-      <option value="Estudio">📚 Estudio</option>
-    </select>
-  </section>
-
-  <!-- ✅ Publicación de post -->
-  <section id="blog">
-    <div id="nueva-publicacion">
-      <input type="text" id="titulo-post" placeholder="Título del post" />
-      <textarea id="contenido-post" rows="4" placeholder="Escribí tu contenido, link o pensamiento..."></textarea>
-
-      <div class="fila">
-        <label>📎 Categoría:</label>
-        <select id="categoria-post">
-          <option value="">Seleccionar...</option>
-          <option value="Arte">🎨 Arte</option>
-          <option value="Mecánica">🔧 Mecánica</option>
-          <option value="Psicología">🧠 Psicología</option>
-          <option value="Tecnología">💻 Tecnología</option>
-          <option value="Cocina">🍳 Cocina</option>
-          <option value="Estudio">📚 Estudio</option>
-        </select>
-      </div>
-
-      <div class="fila">
-        <label>📷 Imagen:</label>
-        <input type="file" id="imagen-post" accept="image/*" />
-      </div>
-
-      <button onclick="publicar()">Publicar</button>
-    </div>
-
-    <!-- ✅ Propuesta de nueva categoría -->
-    <div id="propuesta-categoria">
-      <input type="text" id="nueva-categoria" placeholder="Proponer nueva categoría..." />
-      <button onclick="proponerCategoria()">Enviar</button>
-    </div>
-
-    <div id="blog-posts"></div>
-  </section>
-
-  <!-- ✅ Cierre de sesión -->
-  <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
-
-  <!-- ✅ Script principal -->
-  <script type="module" src="js/publico.js"></script>
-
+  <!-- ✅ Módulos JS -->
+  <script type="module" src="js/firebase.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/blog.js"></script>
+  <script type="module" src="js/chat.js"></script>
 </body>
 </html>
