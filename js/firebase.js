@@ -1,5 +1,5 @@
 // js/firebase.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
   getFirestore
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -18,8 +18,13 @@ const firebaseConfig = {
   appId: "1:398326666724:web:212270bf526481ad94e3f1"
 };
 
-// Inicializar Firebase
-const app = initializeApp(firebaseConfig);
+// ✅ Evitar duplicación del app por recarga o múltiples scripts
+let app;
+if (!getApps().length) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApps()[0];
+}
 
 // Exportar instancias
 export const db = getFirestore(app);
