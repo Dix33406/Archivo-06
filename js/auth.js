@@ -1,5 +1,5 @@
 // js/auth.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
   getAuth,
   onAuthStateChanged,
@@ -16,35 +16,51 @@ const firebaseConfig = {
   appId: "1:493765667584:web:2ad110dd54b9d0d3d2e1e5"
 };
 
-const app = initializeApp(firebaseConfig);
+// ✅ Evitar duplicación de app
+let app;
+if (!getApps().length) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApps()[0];
+}
+
 const auth = getAuth(app);
 
 // ✅ Redirección si no hay sesión
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    window.location.href = "login.html"; // tu pantalla de login
+    window.location.href = "login.html";
   } else {
     console.log("Usuario activo:", user.email);
   }
 });
 
-// ✅ Cerrar sesión manual
-window.cerrarSesion = () => {
-  signOut(auth).then(() => {
-    window.location.href = "login.html";
-  });
-};
+// ✅ Cerrar sesión manual desde botón
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    });
+  }
+});
 
 // ✅ Cierre por inactividad (5 minutos)
 let tiempoInactividad;
 const tiempoMax = 5 * 60 * 1000; // 5 minutos
 
+function cerrarSesionInactividad() {
+  signOut(auth).then(() => {
+    alert("Sesión cerrada por inactividad.");
+    window.location.href = "login.html";
+  });
+}
+
 function resetearInactividad() {
   clearTimeout(tiempoInactividad);
-  tiempoInactividad = setTimeout(() => {
-    cerrarSesion();
-    alert("Sesión cerrada por inactividad.");
-  }, tiempoMax);
+  tiempoInactividad = setTimeout(cerrarSesionInactividad, tiempoMax);
 }
 
 // Detectar cualquier acción del usuario
