@@ -132,6 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // ✅ Chat
 const input = document.getElementById("chat-input");
 const chatBox = document.getElementById("chat-box");
+if (chatBox) {
+  chatBox.innerHTML = "";
+  // ...
+}
 const usuario = localStorage.getItem("usuarioActual") || "Anónimo";
 
 async function enviarMensaje() {
