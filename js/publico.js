@@ -198,5 +198,13 @@ onSnapshot(q, snapshot => {
 // Minimizar
 document.getElementById("toggle-chat").addEventListener("click", () => {
   const chat = document.getElementById("chat-float");
+  const boton = document.getElementById("toggle-chat");
+
   chat.classList.toggle("minimizado");
+
+  if (chat.classList.contains("minimizado")) {
+    boton.textContent = "🔼";
+  } else {
+    boton.textContent = "🔽";
+  }
 });
