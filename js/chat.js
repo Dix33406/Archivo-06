@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
   getFirestore,
   collection,
@@ -19,7 +19,14 @@ const firebaseConfigChat = {
   appId: "1:398326666724:web:212270bf526481ad94e3f1"
 };
 
-const chatApp = initializeApp(firebaseConfigChat, "chatApp");
+// ✅ Evitar duplicación de chatApp
+let chatApp;
+if (!getApps().some(app => app.name === "chatApp")) {
+  chatApp = initializeApp(firebaseConfigChat, "chatApp");
+} else {
+  chatApp = getApp("chatApp");
+}
+
 const chatDB = getFirestore(chatApp);
 
 // 🔄 Referencias DOM
