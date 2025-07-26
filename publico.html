@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SnapBack Foro Demo</title>
-  <link rel="stylesheet" href="css/publico.css" />
+  <link rel="stylesheet" href="publico.css" />
 </head>
 <body>
   <header>SnapBack</header>
@@ -24,9 +24,9 @@
   <section id="blog">
     <div id="nueva-publicacion">
       <input type="text" id="titulo-post" placeholder="Título del post" />
-      <textarea id="contenido-post" rows="4" placeholder="Escribí tu contenido, link o pensamiento..."></textarea>
+      <textarea id="contenido-post" rows="4" placeholder="Escribí tu contenido..."></textarea>
 
-      <div style="margin: 10px 0;">
+      <div>
         <label>📎 Categoría:</label>
         <select id="categoria-post">
           <option value="">Seleccionar...</option>
@@ -47,19 +47,19 @@
 
   <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
 
-  <!-- 📡 Chat flotante -->
+  <!-- 📡 Chat SnapBack -->
   <div id="chat-float" class="minimizado">
     <div id="chat-header">
       <span>💬 Chat SnapBack</span>
-      <button id="toggle-chat">🔽</button>
+      <button id="toggle-chat">🔼</button>
     </div>
-    <div id="chat-box"></div>
+    <div id="chat-mensajes"></div>
     <div id="chat-escribir">
       <input type="text" id="chat-input" placeholder="Escribí un mensaje..." />
       <button id="btn-enviar">Enviar</button>
     </div>
   </div>
 
-  <script type="module" src="js/publico.js"></script>
+  <script type="module" src="publico.js"></script>
 </body>
 </html>
