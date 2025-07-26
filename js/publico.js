@@ -13,7 +13,7 @@ function cerrarSesion() {
   }
   localStorage.removeItem('usuarioActual');
   localStorage.removeItem('ultimaConexion');
-  window.location.href = "login.html";
+  window.location.href = "/login.html";
 }
 
 // ✅ Publicar post (base local)
