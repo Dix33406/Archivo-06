@@ -189,3 +189,15 @@ async function proponerCategoria() {
   alert("Gracias por tu propuesta, será revisada.");
   document.getElementById("nueva-categoria").value = "";
 }
+
+window.cerrarSesion = function () {
+  const usuario = localStorage.getItem('usuarioActual');
+  if (usuario) {
+    let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+    usuarios = usuarios.filter(u => u !== usuario);
+    localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
+  }
+  localStorage.removeItem('usuarioActual');
+  localStorage.removeItem('ultimaConexion');
+  location.href = "login.html";
+};
