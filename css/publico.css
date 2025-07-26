@@ -1,12 +1,19 @@
-/* RESET Y FUENTE */
-body {
+/* Reset general */
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   background-color: #000;
   color: white;
   font-family: 'Courier New', Courier, monospace;
-  padding-bottom: 100px;
+  line-height: 1.6;
+  padding-bottom: 120px; /* espacio para chat flotante */
 }
 
+/* Cabecera */
 header {
   background: #111;
   padding: 1rem;
@@ -15,13 +22,14 @@ header {
   border-bottom: 2px solid #333;
 }
 
-/* FILTRO DE CATEGORÍAS */
+/* Categorías */
 .categorias {
   display: flex;
-  justify-content: center;
-  padding: 10px;
   flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
   background: #111;
+  padding: 10px;
 }
 
 #filtro {
@@ -33,16 +41,17 @@ header {
   border-radius: 6px;
 }
 
-/* PUBLICACIONES */
+/* Blog container */
 #blog {
-  margin: 20px auto;
-  max-width: 700px;
+  max-width: 800px;
+  margin: 30px auto;
   padding: 20px;
   background-color: #111;
   border-radius: 8px;
   border: 1px solid #444;
 }
 
+/* Inputs y publicación */
 #nueva-publicacion input,
 #nueva-publicacion textarea,
 #nueva-publicacion select {
@@ -62,41 +71,10 @@ header {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
+  font-weight: bold;
 }
 
-.fila {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
-
-#propuesta-categoria {
-  margin: 20px 0;
-  display: flex;
-  flex-direction: column;
-}
-
-#propuesta-categoria input {
-  padding: 8px;
-  margin-bottom: 6px;
-  border: 1px solid #555;
-  background: #1c1c1c;
-  color: white;
-  border-radius: 4px;
-}
-
-#propuesta-categoria button {
-  padding: 8px;
-  background-color: #fff;
-  color: #000;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* POSTS */
+/* Posts */
 .post {
   background-color: #1a1a1a;
   padding: 15px;
@@ -132,10 +110,31 @@ header {
   font-size: 1rem;
 }
 
-/* CHAT FLOTANTE */
+/* Botón cerrar sesión */
+#logout-btn {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 999;
+}
+
+#logout-btn:hover {
+  background-color: white;
+  color: black;
+}
+
+/* Chat flotante */
 #chat-float {
   position: fixed;
-  bottom: 70px; /* subido para no quedar fuera en móvil */
+  bottom: 80px; /* subido más arriba */
   right: 20px;
   width: 320px;
   background: #111;
@@ -148,7 +147,7 @@ header {
 }
 
 #chat-float.minimizado {
-  transform: translateY(80%);
+  transform: translateY(85%);
   height: 40px;
 }
 
@@ -162,12 +161,12 @@ header {
   cursor: default;
 }
 
-#chat-header button {
+#toggle-chat {
   cursor: pointer;
   background: none;
   border: none;
-  color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  color: white;
 }
 
 #chat-mensajes {
@@ -198,48 +197,28 @@ header {
   padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
 }
 
-/* BOTÓN DE CERRAR SESIÓN */
-#logout-btn {
-  position: fixed;
-  top: 15px;
-  right: 20px;
-  background-color: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 6px 14px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  z-index: 999;
-}
-
-#logout-btn:hover {
-  background-color: white;
-  color: black;
-}
-
-/* RESPONSIVE */
+/* Responsivo */
 @media (max-width: 768px) {
   #chat-float {
     width: 95%;
     right: 2.5%;
-    bottom: 60px;
   }
 
   #blog {
-    margin: 15px;
+    margin: 20px 10px;
     padding: 15px;
   }
 
-  #nueva-publicacion button {
+  #nueva-publicacion input,
+  #nueva-publicacion textarea {
     font-size: 1rem;
   }
 
-  .categorias {
-    flex-direction: column;
-    align-items: center;
+  #logout-btn {
+    font-size: 0.8rem;
+    padding: 4px 10px;
   }
 }
