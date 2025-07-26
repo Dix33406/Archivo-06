@@ -3,19 +3,6 @@ if (!localStorage.getItem('usuarioActual')) {
   window.location.href = "login.html";
 }
 
-// ✅ Cierre manual de sesión
-function cerrarSesion() {
-  const usuario = localStorage.getItem('usuarioActual');
-  if (usuario) {
-    let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
-    usuarios = usuarios.filter(u => u !== usuario);
-    localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
-  }
-  localStorage.removeItem('usuarioActual');
-  localStorage.removeItem('ultimaConexion');
-  window.location.href = "/login.html";
-}
-
 // ✅ Publicar post (base local)
 function publicar() {
   const titulo = document.getElementById('titulo-post').value.trim();
