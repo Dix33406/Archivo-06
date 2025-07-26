@@ -28,10 +28,15 @@ const auth = getAuth(app);
 
 // ✅ Redirección si no hay sesión
 onAuthStateChanged(auth, (user) => {
-  if (!user) {
+  const enLogin = window.location.pathname.includes("login.html");
+
+  if (!user && !enLogin) {
     window.location.href = "login.html";
-  } else {
-    console.log("Usuario activo:", user.email);
+  }
+
+  if (user && enLogin) {
+    // ya hay sesión, así que no mostrar login
+    window.location.href = "publico.html";
   }
 });
 
